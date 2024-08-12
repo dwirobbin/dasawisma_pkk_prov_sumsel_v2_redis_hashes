@@ -1,0 +1,52 @@
+@media (min-width: 320px) {
+    img.card-img-list {
+        max-height: 180px;
+    }
+}
+
+@media (min-width: 356px) {
+    img.card-img-list {
+        max-height: 200px;
+    }
+}
+
+@media (min-width: 420px) {
+    img.card-img-list {
+        max-height: 250px;
+    }
+}
+
+/* sm */
+@media (min-width: 576px) {
+    img.card-img-list {
+        max-height: 280px;
+    }
+}
+
+/* md */
+@media (min-width: 768px) {
+    img.card-img-list {
+        max-height: 280px;
+    }
+}
+
+/* lg */
+@media (min-width: 992px) {
+    img.card-img-list {
+        max-height: 280px;
+    }
+}
+
+/* xl */
+@media (min-width: 1200px) {
+    img.card-img-list {
+        max-height: 280px;
+    }
+}
+
+/* xxl */
+@media (min-width: 1400px) {
+    img.card-img-list {
+        max-height: 280px;
+    }
+}

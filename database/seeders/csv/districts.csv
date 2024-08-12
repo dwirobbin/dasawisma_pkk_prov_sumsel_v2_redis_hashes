@@ -1,0 +1,237 @@
+id,name,slug,area,regency_id
+1601052,Lengkiti,lengkiti,Kecamatan,1601
+1601070,Sosoh Buay Rayap,sosoh-buay-rayap,Kecamatan,1601
+1601080,Pengandonan,pengandonan,Kecamatan,1601
+1601081,Semidang Aji,semidang-aji,Kecamatan,1601
+1601082,Ulu Ogan,ulu-ogan,Kecamatan,1601
+1601083,Muara Jaya,muara-jaya,Kecamatan,1601
+1601090,Peninjauan,peninjauan,Kecamatan,1601
+1601091,Lubuk Batang,lubuk-batang,Kecamatan,1601
+1601092,Sinar Peninjauan,sinar-peninjauan,Kecamatan,1601
+1601093,Kedaton Peninjauan Raya,kedaton-peninjauan-raya,Kecamatan,1601
+1601130,Batu Raja Timur,batu-raja-timur,Kecamatan,1601
+1601131,Lubuk Raja,lubuk-raja,Kecamatan,1601
+1601140,Batu Raja Barat,batu-raja-barat,Kecamatan,1601
+1602010,Lempuing,lempuing,Kecamatan,1602
+1602011,Lempuing Jaya,lempuing-jaya,Kecamatan,1602
+1602020,Mesuji,mesuji,Kecamatan,1602
+1602021,Sungai Menang,sungai-menang,Kecamatan,1602
+1602022,Mesuji Makmur,mesuji-makmur,Kecamatan,1602
+1602023,Mesuji Raya,mesuji-raya,Kecamatan,1602
+1602030,Tulung Selapan,tulung-selapan,Kecamatan,1602
+1602031,Cengal,cengal,Kecamatan,1602
+1602040,Pedamaran,pedamaran,Kecamatan,1602
+1602041,Pedamaran Timur,pedamaran-timur,Kecamatan,1602
+1602050,Tanjung Lubuk,tanjung-lubuk,Kecamatan,1602
+1602051,Teluk Gelam,teluk-gelam,Kecamatan,1602
+1602060,Kota Kayu Agung,kota-kayu-agung,Kecamatan,1602
+1602120,Sirah Pulau Padang,sirah-pulau-padang,Kecamatan,1602
+1602121,Jejawi,jejawi,Kecamatan,1602
+1602130,Pampangan,pampangan,Kecamatan,1602
+1602131,Pangkalan Lapam,pangkalan-lapam,Kecamatan,1602
+1602140,Air Sugihan,air-sugihan,Kecamatan,1602
+1603010,Semendo Darat Laut,semendo-darat-laut,Kecamatan,1603
+1603011,Semendo Darat Ulu,semendo-darat-ulu,Kecamatan,1603
+1603012,Semendo Darat Tengah,semendo-darat-tengah,Kecamatan,1603
+1603020,Tanjung Agung,tanjung-agung,Kecamatan,1603
+1603031,Rambang,rambang,Kecamatan,1603
+1603032,Lubai,lubai,Kecamatan,1603
+1603033,Lubai Ulu,lubai-ulu,Kecamatan,1603
+1603040,Lawang Kidul,lawang-kidul,Kecamatan,1603
+1603050,Muara Enim,muara-enim,Kecamatan,1603
+1603051,Ujan Mas,ujan-mas,Kecamatan,1603
+1603060,Gunung Megang,gunung-megang,Kecamatan,1603
+1603061,Benakat,benakat,Kecamatan,1603
+1603062,Belimbing,belimbing,Kecamatan,1603
+1603070,Rambang Dangku,rambang-dangku,Kecamatan,1603
+1603090,Gelumbang,gelumbang,Kecamatan,1603
+1603091,Lembak,lembak,Kecamatan,1603
+1603092,Sungai Rotan,sungai-rotan,Kecamatan,1603
+1603093,Muara Belida,muara-belida,Kecamatan,1603
+1603094,Kelekar,kelekar,Kecamatan,1603
+1603095,Belida Darat,belida-darat,Kecamatan,1603
+1604011,Tanjung Sakti Pumi,tanjung-sakti-pumi,Kecamatan,1604
+1604012,Tanjung Sakti Pumu,tanjung-sakti-pumu,Kecamatan,1604
+1604040,Kota Agung,kota-agung,Kecamatan,1604
+1604041,Mulak Ulu,mulak-ulu,Kecamatan,1604
+1604042,Tanjung Tebat,tanjung-tebat,Kecamatan,1604
+1604043,Mulak Sebingkai,mulak-sebingkai,Kecamatan,1604
+1604050,Pulau Pinang,pulau-pinang,Kecamatan,1604
+1604051,Pagar Gunung,pagar-gunung,Kecamatan,1604
+1604052,Gumay Ulu,gumay-ulu,Kecamatan,1604
+1604060,Jarai,jarai,Kecamatan,1604
+1604061,Pajar Bulan,pajar-bulan,Kecamatan,1604
+1604062,Muara Payang,muara-payang,Kecamatan,1604
+1604063,Sukamerindu,sukamerindu,Kecamatan,1604
+1604111,Kikim Barat,kikim-barat,Kecamatan,1604
+1604112,Kikim Timur,kikim-timur,Kecamatan,1604
+1604113,Kikim Selatan,kikim-selatan,Kecamatan,1604
+1604114,Kikim Tengah,kikim-tengah,Kecamatan,1604
+1604120,Lahat,lahat,Kecamatan,1604
+1604121,Gumay Talang,gumay-talang,Kecamatan,1604
+1604122,Pseksu,pseksu,Kecamatan,1604
+1604123,Lahat Selatan,lahat-selatan,Kecamatan,1604
+1604131,Merapi Barat,merapi-barat,Kecamatan,1604
+1604132,Merapi Timur,merapi-timur,Kecamatan,1604
+1604133,Merapi Selatan,merapi-selatan,Kecamatan,1604
+1605030,Suku Tengah Lakitan Ulu,suku-tengah-lakitan-ulu,Kecamatan,1605
+1605031,Selangit,selangit,Kecamatan,1605
+1605032,Sumber Harta,sumber-harta,Kecamatan,1605
+1605040,Tugumulyo,tugumulyo,Kecamatan,1605
+1605041,Purwodadi,purwodadi,Kecamatan,1605
+1605050,Muara Beliti,muara-beliti,Kecamatan,1605
+1605051,Tiang Pumpung Kepungut,tiang-pumpung-kepungut,Kecamatan,1605
+1605060,Jayaloka,jayaloka,Kecamatan,1605
+1605061,Suka Karya,suka-karya,Kecamatan,1605
+1605070,Muara Kelingi,muara-kelingi,Kecamatan,1605
+1605071,Bulang Tengah Suku Ulu,bulang-tengah-suku-ulu,Kecamatan,1605
+1605072,Tuah Negeri,tuah-negeri,Kecamatan,1605
+1605080,Muara Lakitan,muara-lakitan,Kecamatan,1605
+1605090,Megang Sakti,megang-sakti,Kecamatan,1605
+1606010,Sanga Desa,sanga-desa,Kecamatan,1606
+1606020,Babat Toman,babat-toman,Kecamatan,1606
+1606021,Batanghari Leko,batanghari-leko,Kecamatan,1606
+1606022,Plakat Tinggi,plakat-tinggi,Kecamatan,1606
+1606023,Lawang Wetan,lawang-wetan,Kecamatan,1606
+1606030,Sungai Keruh,sungai-keruh,Kecamatan,1606
+1606040,Sekayu,sekayu,Kecamatan,1606
+1606041,Lais,lais,Kecamatan,1606
+1606090,Sungai Lilin,sungai-lilin,Kecamatan,1606
+1606091,Keluang,keluang,Kecamatan,1606
+1606092,Babat Supat,babat-supat,Kecamatan,1606
+1606100,Bayung Lencir,bayung-lencir,Kecamatan,1606
+1606101,Lalan,lalan,Kecamatan,1606
+1606102,Tungkal Jaya,tungkal-jaya,Kecamatan,1606
+1607010,Rantau Bayur,rantau-bayur,Kecamatan,1607
+1607020,Betung,betung,Kecamatan,1607
+1607021,Suak Tapeh,suak-tapeh,Kecamatan,1607
+1607030,Pulau Rimau,pulau-rimau,Kecamatan,1607
+1607031,Tungkal Ilir,tungkal-ilir,Kecamatan,1607
+1607040,Banyuasin III,banyuasin-iii,Kecamatan,1607
+1607041,Sembawa,sembawa,Kecamatan,1607
+1607050,Talang Kelapa,talang-kelapa,Kecamatan,1607
+1607051,Tanjung Lago,tanjung-lago,Kecamatan,1607
+1607060,Banyuasin I,banyuasin-i,Kecamatan,1607
+1607061,Air Kumbang,air-kumbang,Kecamatan,1607
+1607070,Rambutan,rambutan,Kecamatan,1607
+1607080,Muara Padang,muara-padang,Kecamatan,1607
+1607081,Muara Sugihan,muara-sugihan,Kecamatan,1607
+1607090,Makarti Jaya,makarti-jaya,Kecamatan,1607
+1607091,Air Saleh,air-saleh,Kecamatan,1607
+1607100,Banyuasin II,banyuasin-ii,Kecamatan,1607
+1607110,Muara Telang,muara-telang,Kecamatan,1607
+1607111,Sumber Marga Telang,sumber-marga-telang,Kecamatan,1607
+1608010,Mekakau Ilir,mekakau-ilir,Kecamatan,1608
+1608020,Banding Agung,banding-agung,Kecamatan,1608
+1608021,Warkuk Ranau Selatan,warkuk-ranau-selatan,Kecamatan,1608
+1608022,Buay Pematang Ribu Ranau Tengah,buay-pematang-ribu-ranau-tengah,Kecamatan,1608
+1608030,Buay Pemaca,buay-pemaca,Kecamatan,1608
+1608040,Simpang,simpang,Kecamatan,1608
+1608041,Buana Pemaca,buana-pemaca,Kecamatan,1608
+1608050,Muaradua,muaradua,Kecamatan,1608
+1608051,Buay Rawan,buay-rawan,Kecamatan,1608
+1608060,Buay Sandang Aji,buay-sandang-aji,Kecamatan,1608
+1608061,Tiga Dihaji,tiga-dihaji,Kecamatan,1608
+1608070,Buay Runjung,buay-runjung,Kecamatan,1608
+1608071,Runjung Agung,runjung-agung,Kecamatan,1608
+1608080,Kisam Tinggi,kisam-tinggi,Kecamatan,1608
+1608090,Muaradua Kisam,muaradua-kisam,Kecamatan,1608
+1608091,Kisam Ilir,kisam-ilir,Kecamatan,1608
+1608100,Pulau Beringin,pulau-beringin,Kecamatan,1608
+1608101,Sindang Danau,sindang-danau,Kecamatan,1608
+1608102,Sungai Are,sungai-are,Kecamatan,1608
+1609010,Martapura,martapura,Kecamatan,1609
+1609011,Bunga Mayang,bunga-mayang,Kecamatan,1609
+1609012,Jaya Pura,jaya-pura,Kecamatan,1609
+1609020,Buay Pemuka Peliung,buay-pemuka-peliung,Kecamatan,1609
+1609030,Buay Madang,buay-madang,Kecamatan,1609
+1609031,Buay Madang Timur,buay-madang-timur,Kecamatan,1609
+1609032,Buay Pemuka Bangsa Raja,buay-pemuka-bangsa-raja,Kecamatan,1609
+1609040,Madang Suku II,madang-suku-ii,Kecamatan,1609
+1609041,Madang Suku III,madang-suku-iii,Kecamatan,1609
+1609050,Madang Suku I,madang-suku-i,Kecamatan,1609
+1609051,Belitang Madang Raya,belitang-madang-raya,Kecamatan,1609
+1609060,Belitang,belitang,Kecamatan,1609
+1609061,Belitang Jaya,belitang-jaya,Kecamatan,1609
+1609070,Belitang III,belitang-iii,Kecamatan,1609
+1609080,Belitang II,belitang-ii,Kecamatan,1609
+1609081,Belitang Mulya,belitang-mulya,Kecamatan,1609
+1609090,Semendawai Suku III,semendawai-suku-iii,Kecamatan,1609
+1609091,Semendawai Timur,semendawai-timur,Kecamatan,1609
+1609100,Cempaka,cempaka,Kecamatan,1609
+1609101,Semendawai Barat,semendawai-barat,Kecamatan,1609
+1610010,Muara Kuang,muara-kuang,Kecamatan,1610
+1610011,Rambang Kuang,rambang-kuang,Kecamatan,1610
+1610012,Lubuk Keliat,lubuk-keliat,Kecamatan,1610
+1610020,Tanjung Batu,tanjung-batu,Kecamatan,1610
+1610021,Payaraman,payaraman,Kecamatan,1610
+1610030,Rantau Alai,rantau-alai,Kecamatan,1610
+1610031,Kandis,kandis,Kecamatan,1610
+1610040,Tanjung Raja,tanjung-raja,Kecamatan,1610
+1610041,Rantau Panjang,rantau-panjang,Kecamatan,1610
+1610042,Sungai Pinang,sungai-pinang,Kecamatan,1610
+1610050,Pemulutan,pemulutan,Kecamatan,1610
+1610051,Pemulutan Selatan,pemulutan-selatan,Kecamatan,1610
+1610052,Pemulutan Barat,pemulutan-barat,Kecamatan,1610
+1610060,Indralaya,indralaya,Kecamatan,1610
+1610061,Indralaya Utara,indralaya-utara,Kecamatan,1610
+1610062,Indralaya Selatan,indralaya-selatan,Kecamatan,1610
+1611010,Muara Pinang,muara-pinang,Kecamatan,1611
+1611020,Lintang Kanan,lintang-kanan,Kecamatan,1611
+1611030,Pendopo,pendopo,Kecamatan,1611
+1611031,Pendopo Barat,pendopo-barat,Kecamatan,1611
+1611040,Pasemah Air Keruh,pasemah-air-keruh,Kecamatan,1611
+1611050,Ulu Musi,ulu-musi,Kecamatan,1611
+1611051,Sikap Dalam,sikap-dalam,Kecamatan,1611
+1611060,Talang Padang,talang-padang,Kecamatan,1611
+1611070,Tebing Tinggi,tebing-tinggi,Kecamatan,1611
+1611071,Saling,saling,Kecamatan,1611
+1612010,Talang Ubi,talang-ubi,Kecamatan,1612
+1612020,Tanah Abang,tanah-abang,Kecamatan,1612
+1612030,Abab,abab,Kecamatan,1612
+1612040,Penukal,penukal,Kecamatan,1612
+1612050,Penukal Utara,penukal-utara,Kecamatan,1612
+1613010,Ulu Rawas,ulu-rawas,Kecamatan,1613
+1613020,Karang Jaya,karang-jaya,Kecamatan,1613
+1613030,Rawas Ulu,rawas-ulu,Kecamatan,1613
+1613040,Rupit,rupit,Kecamatan,1613
+1613050,Karang Dapo,karang-dapo,Kecamatan,1613
+1613060,Rawas Ilir,rawas-ilir,Kecamatan,1613
+1613070,Nibung,nibung,Kecamatan,1613
+1671010,Ilir Barat II,ilir-barat-ii,Kecamatan,1671
+1671011,Gandus,gandus,Kecamatan,1671
+1671020,Seberang Ulu I,seberang-ulu-i,Kecamatan,1671
+1671021,Kertapati,kertapati,Kecamatan,1671
+1671022,Jakabaring,jakabaring,Kecamatan,1671
+1671030,Seberang Ulu II,seberang-ulu-ii,Kecamatan,1671
+1671031,Plaju,plaju,Kecamatan,1671
+1671040,Ilir Barat I,ilir-barat-i,Kecamatan,1671
+1671041,Bukit Kecil,bukit-kecil,Kecamatan,1671
+1671050,Ilir Timur I,ilir-timur-i,Kecamatan,1671
+1671051,Kemuning,kemuning,Kecamatan,1671
+1671060,Ilir Timur II,ilir-timur-ii,Kecamatan,1671
+1671061,Kalidoni,kalidoni,Kecamatan,1671
+1671062,Ilir Timur III,ilir-timur-iii,Kecamatan,1671
+1671070,Sako,sako,Kecamatan,1671
+1671071,Sematang Borang,sematang-borang,Kecamatan,1671
+1671080,Sukarami,sukarami,Kecamatan,1671
+1671081,Alang Alang Lebar,alang-alang-lebar,Kecamatan,1671
+1672010,Rambang Kapak Tengah,rambang-kapak-tengah,Kecamatan,1672
+1672020,Prabumulih Timur,prabumulih-timur,Kecamatan,1672
+1672021,Prabumulih Selatan,prabumulih-selatan,Kecamatan,1672
+1672030,Prabumulih Barat,prabumulih-barat,Kecamatan,1672
+1672031,Prabumulih Utara,prabumulih-utara,Kecamatan,1672
+1672040,Cambai,cambai,Kecamatan,1672
+1673010,Dempo Selatan,dempo-selatan,Kecamatan,1673
+1673011,Dempo Tengah,dempo-tengah,Kecamatan,1673
+1673020,Dempo Utara,dempo-utara,Kecamatan,1673
+1673030,Pagar Alam Selatan,pagar-alam-selatan,Kecamatan,1673
+1673040,Pagar Alam Utara,pagar-alam-utara,Kecamatan,1673
+1674011,Lubuk Linggau Barat I,lubuk-linggau-barat-i,Kecamatan,1674
+1674012,Lubuk Linggau Barat II,lubuk-linggau-barat-ii,Kecamatan,1674
+1674021,Lubuk Linggau Selatan I,lubuk-linggau-selatan-i,Kecamatan,1674
+1674022,Lubuk Linggau Selatan II,lubuk-linggau-selatan-ii,Kecamatan,1674
+1674031,Lubuk Linggau Timur I,lubuk-linggau-timur-i,Kecamatan,1674
+1674032,Lubuk Linggau Timur II,lubuk-linggau-timur-ii,Kecamatan,1674
+1674041,Lubuk Linggau Utara I,lubuk-linggau-utara-i,Kecamatan,1674
+1674042,Lubuk Linggau Utara II,lubuk-linggau-utara-ii,Kecamatan,1674
