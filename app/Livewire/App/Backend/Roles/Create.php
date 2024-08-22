@@ -30,7 +30,7 @@ class Create extends Component
     {
         $response = $this->form->store();
 
-        flasher_message($response['message'], $response['type']);
+        toastr_message($response['message'], $response['type']);
 
         $this->redirectRoute('area.roles.index', navigate: true);
     }
@@ -41,6 +41,6 @@ class Create extends Component
 
         $this->clearValidation();
 
-        flasher_success('Form Berhasil direset.');
+        toastr_success('Form Berhasil direset.');
     }
 }

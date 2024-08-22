@@ -212,9 +212,9 @@ class Edit extends Component
                 ]);
             });
 
-            flasher_success('Data berhasil diperbaharui.');
+            toastr_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->redirectRoute('area.users.index', navigate: true);

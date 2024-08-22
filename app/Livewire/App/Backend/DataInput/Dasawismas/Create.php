@@ -140,12 +140,12 @@ class Create extends Component
                 ->create($validatedData);
 
             if ($dasawisma->wasRecentlyCreated) {
-                flasher_success('Dasawisma berhasil ditambahkan.');
+                toastr_success('Dasawisma berhasil ditambahkan.');
 
                 $this->dispatch('refresh-data')->to(Table::class);
             }
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan');
+            toastr_error('Terjadi suatu kesalahan');
         } finally {
             $this->resetForm();
             $this->dispatch('close-modal-create');

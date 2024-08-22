@@ -74,9 +74,9 @@ class Edit extends Component
         try {
             $this->familySizeMember->update($validatedData);
 
-            flasher_success('Data berhasil diperbaharui.');
+            toastr_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
-            flasher_fail('Terjadi Suatu Kesalahan.');
+            toastr_error('Terjadi Suatu Kesalahan.');
         }
 
         $this->redirect(route('area.data-input.member.index'), true);

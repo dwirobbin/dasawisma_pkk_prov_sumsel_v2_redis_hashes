@@ -146,11 +146,11 @@ class Edit extends Component
         try {
             $this->dasawisma->update($validatedData);
 
-            flasher_success('Dasawisma berhasil diperbarui.');
+            toastr_success('Dasawisma berhasil diperbarui.');
 
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         } finally {
             $this->resetForm();
             $this->dispatch('close-modal-edit');

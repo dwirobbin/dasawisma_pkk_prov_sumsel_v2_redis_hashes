@@ -72,9 +72,9 @@ class Edit extends Component
 
             $this->dispatch('refresh-data')->to(Table::class);
 
-            flasher_success('Data berhasil diperbaharui.');
+            toastr_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->dispatch('close-modal-family-head-edit');

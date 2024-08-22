@@ -46,11 +46,11 @@ class Delete extends Component
                 if (File::exists($dest . $image)) File::delete($dest . $image);
             }
 
-            flasher_success('Data berhasil dihapus.');
+            toastr_success('Data berhasil dihapus.');
 
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Exception) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
     }
 }

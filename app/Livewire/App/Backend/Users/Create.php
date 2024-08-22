@@ -138,9 +138,9 @@ class Create extends Component
                 ]);
             });
 
-            flasher_success('User baru berhasil ditambahkan.');
+            toastr_success('User baru berhasil ditambahkan.');
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->redirectRoute('area.users.index', navigate: true);

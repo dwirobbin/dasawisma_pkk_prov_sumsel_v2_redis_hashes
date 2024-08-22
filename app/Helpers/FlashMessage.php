@@ -15,7 +15,7 @@ if (!function_exists('flash_message')) {
     }
 }
 
-if (!function_exists('flasher_message')) {
+if (!function_exists('toastr_message')) {
     /**
      * Flasher dynamic type message.
      *
@@ -23,30 +23,32 @@ if (!function_exists('flasher_message')) {
      * @param  string  $type
      * @return void
      */
-    function flasher_message(string $message, string $type): void
+    function toastr_message(string $message, string $type): void
     {
-        flash()->addFlash($type, $message, $type === 'success' ? 'Sukses' : 'Gagal', [
-            'timeout' => 3000, 'position' => 'top-right'
+        toastr($message, $type, $type === 'success' ? 'Sukses' : 'Gagal', [
+            'timeout' => 3000,
+            'position' => 'top-right'
         ]);
     }
 }
 
-if (!function_exists('flasher_success')) {
+if (!function_exists('toastr_success')) {
     /**
      * Flasher success message.
      *
      * @param  string  $message
      * @return void
      */
-    function flasher_success(string $message): void
+    function toastr_success(string $message): void
     {
-        flash()->addFlash('success', $message, 'Sukses', [
-            'timeout' => 3000, 'position' => 'top-right'
+        toastr($message, 'success', 'Sukses', [
+            'timeout' => 3000,
+            'position' => 'top-right'
         ]);
     }
 }
 
-if (!function_exists('flasher_fail')) {
+if (!function_exists('toastr_error')) {
 
     /**
      * Flasher error message.
@@ -54,10 +56,11 @@ if (!function_exists('flasher_fail')) {
      * @param  string  $message
      * @return void
      */
-    function flasher_fail(string $message): void
+    function toastr_error(string $message): void
     {
-        flash()->addFlash('error', $message, 'Gagal', [
-            'timeout' => 3000, 'position' => 'top-right'
+        toastr($message, 'error', 'Gagal', [
+            'timeout' => 3000,
+            'position' => 'top-right'
         ]);
     }
 }

@@ -32,11 +32,11 @@ class Delete extends Component
         try {
             Permission::query()->findOrFail($this->id)->deleteOrFail();
 
-            flasher_success('Data berhasil dihapus.');
+            toastr_success('Data berhasil dihapus.');
 
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->dispatch('close-modal');

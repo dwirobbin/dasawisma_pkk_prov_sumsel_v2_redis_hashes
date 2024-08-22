@@ -86,9 +86,9 @@ class Edit extends Component
                 'house_criteria'        => $this->house_criteria,
             ]);
 
-            flasher_success('Data berhasil diperbaharui.');
+            toastr_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->redirect(route('area.data-input.member.index'), true);

@@ -169,9 +169,9 @@ class Edit extends Component
                 }
             });
 
-            flasher_success("Data Anggota Keluarga {$this->family_head} berhasil diperbarui!");
+            toastr_success("Data Anggota Keluarga {$this->family_head} berhasil diperbarui!");
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->redirect(route('area.data-input.member.index'), true);

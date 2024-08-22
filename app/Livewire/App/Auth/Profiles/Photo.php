@@ -60,11 +60,11 @@ class Photo extends Component
 
             $this->clearValidation();
 
-            flasher_success('Foto Profil berhasil diperbaharui!');
+            toastr_success('Foto Profil berhasil diperbaharui!');
 
             $this->dispatch('refresh-top-right')->to(TopRight::class);
         } catch (\Exception $e) {
-            flasher_fail('Terjadi suatu kesalahan!.');
+            toastr_error('Terjadi suatu kesalahan!.');
         }
     }
 }

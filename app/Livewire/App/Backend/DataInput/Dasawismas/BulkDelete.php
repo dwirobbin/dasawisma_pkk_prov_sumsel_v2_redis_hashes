@@ -34,12 +34,12 @@ class BulkDelete extends Component
                 ->delete();
 
             if ($isSuccess) {
-                flasher_success('Data yang dipilih berhasil dihapus.');
+                toastr_success('Data yang dipilih berhasil dihapus.');
 
                 $this->dispatch('refresh-data')->to(Table::class);
             }
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         } finally {
             $this->dispatch('clear-selected')->to(Table::class);
         }

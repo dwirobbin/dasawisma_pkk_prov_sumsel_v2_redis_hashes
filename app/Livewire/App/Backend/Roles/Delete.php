@@ -41,11 +41,11 @@ class Delete extends Component
                 $role->deleteOrFail();
             });
 
-            flasher_success('Role berhasil dihapus.');
+            toastr_success('Role berhasil dihapus.');
 
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
     }
 }

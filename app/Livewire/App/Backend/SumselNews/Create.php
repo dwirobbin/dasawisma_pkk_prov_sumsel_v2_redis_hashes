@@ -22,7 +22,7 @@ class Create extends Component
     {
         $response = $this->form->store();
 
-        flasher_message($response['message'], $response['type']);
+        toastr_message($response['message'], $response['type']);
 
         $this->redirectRoute('area.sumsel_news.index', navigate: true);
     }

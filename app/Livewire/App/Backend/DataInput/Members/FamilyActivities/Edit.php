@@ -107,9 +107,9 @@ class Edit extends Component
                 'env_health_activity'   => $this->multiImplode($this->env_health_activities, ','),
             ]);
 
-            flasher_success('Data berhasil diperbaharui.');
+            toastr_success('Data berhasil diperbaharui.');
         } catch (\Throwable $th) {
-            flasher_fail($th->getMessage());
+            toastr_error($th->getMessage());
         }
 
         $this->redirect(route('area.data-input.member.index'), true);

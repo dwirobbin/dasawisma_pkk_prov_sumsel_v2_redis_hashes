@@ -34,7 +34,7 @@ class Form extends Component
 
         $response = $this->form->store();
 
-        flasher_message($response['message'], $response['type']);
+        toastr_message($response['message'], $response['type']);
 
         $this->isUpdate = (is_null($this->form->permission)) ? false : true;
 

@@ -33,11 +33,11 @@ class Delete extends Component
                 ->where('id', '=', $this->id)
                 ->delete();
 
-            flasher_success('Data berhasil dihapus.');
+            toastr_success('Data berhasil dihapus.');
 
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
     }
 }

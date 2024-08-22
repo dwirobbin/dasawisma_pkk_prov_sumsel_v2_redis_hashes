@@ -28,9 +28,9 @@ class ToggleButton extends Component
         try {
             $this->model->setAttribute($this->field, $value)->save();
 
-            flasher_success(!$this->isTrue ? 'Status Akun: Aktif' : 'Status Akun: Tidak Aktif');
+            toastr_success(!$this->isTrue ? 'Status Akun: Aktif' : 'Status Akun: Tidak Aktif');
         } catch (\Throwable $th) {
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
     }
 }

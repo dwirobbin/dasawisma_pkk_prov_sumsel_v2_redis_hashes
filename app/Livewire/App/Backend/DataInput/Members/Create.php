@@ -300,10 +300,10 @@ class Create extends Component
                     ]);
             });
 
-            flasher_success('Data berhasil ditambahkan.');
+            toastr_success('Data berhasil ditambahkan.');
         } catch (\Throwable) {
             $this->reset();
-            flasher_fail('Terjadi suatu kesalahan.');
+            toastr_error('Terjadi suatu kesalahan.');
         }
 
         $this->redirect(route('area.data-input.member.index'), true);
