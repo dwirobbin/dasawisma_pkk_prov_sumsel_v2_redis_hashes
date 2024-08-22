@@ -13,8 +13,8 @@ if (!function_exists('gravatar')) {
     }
 }
 
-if (!function_exists('format_natural_number')) {
-    function format_natural_number(int $number): string
+if (!function_exists('format_number')) {
+    function format_number(int $number): string
     {
         return number_format($number, 0, '', '.');
     }

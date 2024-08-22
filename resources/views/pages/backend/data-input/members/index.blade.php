@@ -46,31 +46,31 @@
                 <div class="card"x-data="{ currentTabMember: $persist('tabsFamily') }">
                     <div class="card-header">
                         <ul wire:ignore class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                            <li @click.prevent="currentTabMember = 'tabsFamily'" class="nav-item">
+                            <li @click.prevent="changeTab('tabsFamily')" class="nav-item">
                                 <a href="#tabsFamily" class="nav-link" :class="currentTabMember == 'tabsFamily' ? 'active' : ''"
                                     data-bs-toggle="tab">
                                     Data Kepala Keluarga
                                 </a>
                             </li>
-                            <li @click.prevent="currentTabMember = 'tabsFamilyBuilding'" class="nav-item">
+                            <li @click.prevent="changeTab('tabsFamilyBuilding')" class="nav-item">
                                 <a href="#tabsFamilyBuilding" class="nav-link" :class="currentTabMember == 'tabsFamilyBuilding' ? 'active' : ''"
                                     data-bs-toggle="tab">
                                     Data Bangunan
                                 </a>
                             </li>
-                            <li @click.prevent="currentTabMember = 'tabsFamilyNumber'" class="nav-item">
+                            <li @click.prevent="changeTab('tabsFamilyNumber')" class="nav-item">
                                 <a href="#tabsFamilyNumber" class="nav-link" :class="currentTabMember == 'tabsFamilyNumber' ? 'active' : ''"
                                     data-bs-toggle="tab">
                                     Data Jumlah Anggota Keluarga
                                 </a>
                             </li>
-                            <li @click.prevent="currentTabMember = 'tabsFamilyMember'" class="nav-item">
+                            <li @click.prevent="changeTab('tabsFamilyMember')" class="nav-item">
                                 <a href="#tabsFamilyMember" class="nav-link" :class="currentTabMember == 'tabsFamilyMember' ? 'active' : ''"
                                     data-bs-toggle="tab">
                                     Data Anggota Keluarga
                                 </a>
                             </li>
-                            <li @click.prevent="currentTabMember = 'tabsFamilyActivity'" class="nav-item">
+                            <li @click.prevent="changeTab('tabsFamilyActivity')" class="nav-item">
                                 <a href="#tabsFamilyActivity" class="nav-link" :class="currentTabMember == 'tabsFamilyActivity' ? 'active' : ''"
                                     data-bs-toggle="tab">
                                     Data Aktifitas Keluarga
@@ -106,4 +106,19 @@
             </div>
         </div>
     </div>
+
+    <x-slot name="scripts">
+        <script>
+            function changeTab(tabName) {
+                // Update the currentTabMember in AlpineJS
+                this.currentTabMember = tabName;
+
+                // Use history.pushState to update the URL without reloading the page
+                const url = new URL(window.location);
+                url.searchParams.delete('cursor');
+                url.searchParams.delete('page');
+                history.pushState({}, '', url);
+            }
+        </script>
+    </x-slot>
 </x-app-layout>

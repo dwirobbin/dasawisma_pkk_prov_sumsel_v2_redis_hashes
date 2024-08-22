@@ -15,7 +15,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.2",
-        "php-flasher/flasher-laravel": "^1.15",
+        "php-flasher/flasher-toastr-laravel": "*",
         "predis/predis": "^2.2",
         "ralphjsmit/livewire-urls": "^1.3"
     },

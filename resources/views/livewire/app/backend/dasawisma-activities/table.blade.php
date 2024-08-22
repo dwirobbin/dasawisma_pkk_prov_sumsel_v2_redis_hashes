@@ -4,14 +4,12 @@
             <label>
                 Lihat
                 <select class="d-inline-block form-select w-auto" wire:model.live='perPage'>
-                    <select class="d-inline-block form-select w-auto" wire:model.live='perPage'>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="30">30</option>
-                        <option value="50">50</option>
-                        <option value="80">80</option>
-                        <option value="100">100</option>
-                    </select>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="80">80</option>
+                    <option value="100">100</option>
                 </select>
                 data
             </label>
