@@ -43,62 +43,74 @@
         {{-- Page body --}}
         <div class="page-body pb-2">
             <div class="container-xl">
-                <div class="card"x-data="{ currentTabMember: $persist('tabsFamily') }">
-                    <div class="card-header">
-                        <ul wire:ignore class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                            <li @click.prevent="changeTab('tabsFamily')" class="nav-item">
-                                <a href="#tabsFamily" class="nav-link" :class="currentTabMember == 'tabsFamily' ? 'active' : ''"
-                                    data-bs-toggle="tab">
-                                    Data Kepala Keluarga
-                                </a>
-                            </li>
-                            <li @click.prevent="changeTab('tabsFamilyBuilding')" class="nav-item">
-                                <a href="#tabsFamilyBuilding" class="nav-link" :class="currentTabMember == 'tabsFamilyBuilding' ? 'active' : ''"
-                                    data-bs-toggle="tab">
-                                    Data Bangunan
-                                </a>
-                            </li>
-                            <li @click.prevent="changeTab('tabsFamilyNumber')" class="nav-item">
-                                <a href="#tabsFamilyNumber" class="nav-link" :class="currentTabMember == 'tabsFamilyNumber' ? 'active' : ''"
-                                    data-bs-toggle="tab">
-                                    Data Jumlah Anggota Keluarga
-                                </a>
-                            </li>
-                            <li @click.prevent="changeTab('tabsFamilyMember')" class="nav-item">
-                                <a href="#tabsFamilyMember" class="nav-link" :class="currentTabMember == 'tabsFamilyMember' ? 'active' : ''"
-                                    data-bs-toggle="tab">
-                                    Data Anggota Keluarga
-                                </a>
-                            </li>
-                            <li @click.prevent="changeTab('tabsFamilyActivity')" class="nav-item">
-                                <a href="#tabsFamilyActivity" class="nav-link" :class="currentTabMember == 'tabsFamilyActivity' ? 'active' : ''"
-                                    data-bs-toggle="tab">
-                                    Data Aktifitas Keluarga
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="tab-content">
-                            <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamily' ? 'active' : ''"
-                                id="tabsFamily">
-                                <livewire:app.backend.data-input.members.family-heads.table lazy />
-                            </div>
-                            <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyBuilding' ? 'active' : ''"
-                                id="tabsFamilyBuilding">
-                                <livewire:app.backend.data-input.members.family-buildings.table lazy />
-                            </div>
-                            <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyNumber' ? 'active' : ''"
-                                id="tabsFamilyNumber">
-                                <livewire:app.backend.data-input.members.family-size-members.table lazy />
-                            </div>
-                            <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyMember' ? 'active' : ''"
-                                id="tabsFamilyMember">
-                                <livewire:app.backend.data-input.members.family-members.table lazy />
-                            </div>
-                            <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyActivity' ? 'active' : ''"
-                                id="tabsFamilyActivity">
-                                <livewire:app.backend.data-input.members.family-activities.table lazy />
+                <div x-data="{
+                    currentTabMember: $persist('tabsFamily', { storage: localStorage }),
+                    changeTab(tabName) {
+                        this.currentTabMember = tabName;
+
+                        const url = new URL(window.location);
+                        url.searchParams.delete('cursor');
+                        url.searchParams.delete('page');
+                        history.pushState({}, '', url);
+                    }
+                }">
+                    <div class="card">
+                        <div class="card-header">
+                            <ul wire:ignore class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                                <li @click.prevent="changeTab('tabsFamily')" class="nav-item">
+                                    <a href="#tabsFamily" class="nav-link" :class="currentTabMember == 'tabsFamily' ? 'active' : ''"
+                                        data-bs-toggle="tab">
+                                        Data Kepala Keluarga
+                                    </a>
+                                </li>
+                                <li @click.prevent="changeTab('tabsFamilyBuilding')" class="nav-item">
+                                    <a href="#tabsFamilyBuilding" class="nav-link"
+                                        :class="currentTabMember == 'tabsFamilyBuilding' ? 'active' : ''" data-bs-toggle="tab">
+                                        Data Bangunan
+                                    </a>
+                                </li>
+                                <li @click.prevent="changeTab('tabsFamilyNumber')" class="nav-item">
+                                    <a href="#tabsFamilyNumber" class="nav-link" :class="currentTabMember == 'tabsFamilyNumber' ? 'active' : ''"
+                                        data-bs-toggle="tab">
+                                        Data Jumlah Anggota Keluarga
+                                    </a>
+                                </li>
+                                <li @click.prevent="changeTab('tabsFamilyMember')" class="nav-item">
+                                    <a href="#tabsFamilyMember" class="nav-link" :class="currentTabMember == 'tabsFamilyMember' ? 'active' : ''"
+                                        data-bs-toggle="tab">
+                                        Data Anggota Keluarga
+                                    </a>
+                                </li>
+                                <li @click.prevent="changeTab('tabsFamilyActivity')" class="nav-item">
+                                    <a href="#tabsFamilyActivity" class="nav-link"
+                                        :class="currentTabMember == 'tabsFamilyActivity' ? 'active' : ''" data-bs-toggle="tab">
+                                        Data Aktifitas Keluarga
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content">
+                                <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamily' ? 'active' : ''"
+                                    id="tabsFamily">
+                                    <livewire:app.backend.data-input.members.family-heads.table lazy />
+                                </div>
+                                <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyBuilding' ? 'active' : ''"
+                                    id="tabsFamilyBuilding">
+                                    <livewire:app.backend.data-input.members.family-buildings.table lazy />
+                                </div>
+                                <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyNumber' ? 'active' : ''"
+                                    id="tabsFamilyNumber">
+                                    <livewire:app.backend.data-input.members.family-size-members.table lazy />
+                                </div>
+                                <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyMember' ? 'active' : ''"
+                                    id="tabsFamilyMember">
+                                    <livewire:app.backend.data-input.members.family-members.table lazy />
+                                </div>
+                                <div wire:ignore.self class="tab-pane show" :class="currentTabMember == 'tabsFamilyActivity' ? 'active' : ''"
+                                    id="tabsFamilyActivity">
+                                    <livewire:app.backend.data-input.members.family-activities.table lazy />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,19 +118,4 @@
             </div>
         </div>
     </div>
-
-    <x-slot name="scripts">
-        <script>
-            function changeTab(tabName) {
-                // Update the currentTabMember in AlpineJS
-                this.currentTabMember = tabName;
-
-                // Use history.pushState to update the URL without reloading the page
-                const url = new URL(window.location);
-                url.searchParams.delete('cursor');
-                url.searchParams.delete('page');
-                history.pushState({}, '', url);
-            }
-        </script>
-    </x-slot>
 </x-app-layout>

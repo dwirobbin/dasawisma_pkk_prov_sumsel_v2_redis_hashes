@@ -5,6 +5,8 @@ namespace App\Livewire\App\Backend\DataInput\Members\FamilyBuildings;
 use Livewire\Component;
 use App\Models\Dasawisma;
 use App\Models\FamilyBuilding;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\Rule as ValidationRule;
 
@@ -76,6 +78,125 @@ class Edit extends Component
         );
 
         try {
+            $user = auth()->user();
+
+            $prefix = 'data-recap';
+            $areaName = 'sumatera-selatan';
+
+            if ($user->role_id === 2) { // Admin
+                if ($user->admin->province_id != null && $user->admin->regency_id == null) {
+                    // Provinsi
+                    $areaName = $user->admin->province->slug;
+                } else if ($user->admin->regency_id != null && $user->admin->district_id == null) {
+                    // Kabupaten Kota
+                    $areaName = $user->admin->regency->slug;
+                } else if ($user->admin->district_id != null && $user->admin->village_id == null) {
+                    // Kecamatan
+                    $areaName = $user->admin->district->slug;
+                } else if ($user->admin->village_id != null) {
+                    // Kelurahan
+                    $areaName = $user->admin->village->slug;
+                }
+            }
+
+            $dasawisma = Dasawisma::query()
+                ->with(['province', 'regency', 'district', 'village'])
+                ->where('id', '=', $this->dasawisma_id)
+                ->first();
+
+            $hashKeys = [
+                $prefix . ':' . $areaName . ":fb:regencies:page-*:" . $dasawisma->regency_id,
+                $prefix . ':' . $areaName . ":fb:districts:by-regency:" . $dasawisma->regency->slug . ":page-*:" . $dasawisma->district_id,
+                $prefix . ':' . $areaName . ":fb:villages:by-district:" . $dasawisma->district->slug . ":page-*:" . $dasawisma->village_id,
+                $prefix . ':' . $areaName . ":fb:dasawismas:by-village:" . $dasawisma->village->slug . ":page-*:" . $dasawisma->id,
+                $prefix . ':' . $areaName . ":fb:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:" . $this->familyBuilding->family_head_id,
+            ];
+
+            $keys = [];
+            foreach ($hashKeys as $hashKey) {
+                foreach (Redis::keys($hashKey) as $key) {
+                    $keys[] = $key;
+                }
+            }
+
+            Redis::transaction(function ($tx) use ($keys) {
+                foreach ($keys as $key) {
+                    if ($tx->exists($key)) {
+
+                        // Water Src
+                        if ($this->newDataIsExists('PDAM', $this->water_src, $this->familyBuilding->water_src)) {
+                            $tx->hIncrBy($key, 'pdam_waters_count', 1);
+                        } elseif ($this->oldDataIsExists('PDAM', $this->familyBuilding->water_src, $this->water_src)) {
+                            $tx->hIncrBy($key, 'pdam_waters_count', -1);
+                        }
+
+                        if ($this->newDataIsExists('Sumur', $this->water_src, $this->familyBuilding->water_src)) {
+                            $tx->hIncrBy($key, 'well_waters_count', 1);
+                        } elseif ($this->oldDataIsExists('Sumur', $this->familyBuilding->water_src, $this->water_src)) {
+                            $tx->hIncrBy($key, 'well_waters_count', -1);
+                        }
+
+                        if ($this->newDataIsExists('Sungai', $this->water_src, $this->familyBuilding->water_src)) {
+                            $tx->hIncrBy($key, 'river_waters_count', 1);
+                        } elseif ($this->oldDataIsExists('Sungai', $this->familyBuilding->water_src, $this->water_src)) {
+                            $tx->hIncrBy($key, 'river_waters_count', -1);
+                        }
+
+                        if ($this->newDataIsExists('Lainnya', $this->water_src, $this->familyBuilding->water_src)) {
+                            $tx->hIncrBy($key, 'etc_waters_count', 1);
+                        } elseif ($this->oldDataIsExists('Lainnya', $this->familyBuilding->water_src, $this->water_src)) {
+                            $tx->hIncrBy($key, 'etc_waters_count', -1);
+                        }
+
+                        // Staple Food
+                        if ($this->staple_food === 'Beras' && $this->familyBuilding->staple_food !== 'Beras') {
+                            $tx->hIncrBy($key, 'rice_foods_count', 1);
+                            $tx->hIncrBy($key, 'etc_rice_foods_count', -1);
+                        } elseif ($this->staple_food === 'Non Beras' && $this->familyBuilding->staple_food !== 'Non Beras') {
+                            $tx->hIncrBy($key, 'rice_foods_count', -1);
+                            $tx->hIncrBy($key, 'etc_rice_foods_count', 1);
+                        }
+
+                        // Have Toilet
+                        if ($this->have_toilet === 'yes' && $this->familyBuilding->have_toilet !== 1) {
+                            $tx->hIncrBy($key, 'have_toilets_count', 1);
+                        } elseif ($this->have_toilet === 'no' && $this->familyBuilding->have_toilet === 1) {
+                            $tx->hIncrBy($key, 'have_toilets_count', -1);
+                        }
+
+                        // Have Landfill
+                        if ($this->have_landfill === 'yes' && $this->familyBuilding->have_landfill !== 1) {
+                            $tx->hIncrBy($key, 'have_landfills_count', 1);
+                        } elseif ($this->have_landfill === 'no' && $this->familyBuilding->have_landfill === 1) {
+                            $tx->hIncrBy($key, 'have_landfills_count', -1);
+                        }
+
+                        // Have Sewerage
+                        if ($this->have_sewerage === 'yes' && $this->familyBuilding->have_sewerage !== 1) {
+                            $tx->hIncrBy($key, 'have_sewerages_count', 1);
+                        } elseif ($this->have_sewerage === 'no' && $this->familyBuilding->have_sewerage === 1) {
+                            $tx->hIncrBy($key, 'have_sewerages_count', -1);
+                        }
+
+                        // Pasting P4K Sticker
+                        if ($this->pasting_p4k_sticker === 'yes' && $this->familyBuilding->pasting_p4k_sticker !== 1) {
+                            $tx->hIncrBy($key, 'pasting_p4k_stickers_count', 1);
+                        } elseif ($this->pasting_p4k_sticker === 'no' && $this->familyBuilding->pasting_p4k_sticker === 1) {
+                            $tx->hIncrBy($key, 'pasting_p4k_stickers_count', -1);
+                        }
+
+                        // House Criteria
+                        if ($this->house_criteria === 'Sehat' && $this->familyBuilding->house_criteria !== 'Sehat') {
+                            $tx->hIncrBy($key, 'healthy_criterias_count', 1);
+                            $tx->hIncrBy($key, 'no_healthy_criterias_count', -1);
+                        } elseif ($this->house_criteria === 'Kurang Sehat' && $this->familyBuilding->house_criteria !== 'Kurang Sehat') {
+                            $tx->hIncrBy($key, 'healthy_criterias_count', -1);
+                            $tx->hIncrBy($key, 'no_healthy_criterias_count', 1);
+                        }
+                    }
+                }
+            });
+
             $this->familyBuilding->update([
                 'staple_food'           => $this->staple_food,
                 'have_toilet'           => ($this->have_toilet === 'yes') ? true : false,
@@ -92,6 +213,22 @@ class Edit extends Component
         }
 
         $this->redirect(route('area.data-input.member.index'), true);
+    }
+
+    private function newDataIsExists($search, $newSrc, $oldSrc): bool
+    {
+        // Mengambil data yang di-checklist
+        $newData = array_diff($newSrc, explode(',', $oldSrc));
+
+        return in_array($search, $newData);
+    }
+
+    private function oldDataIsExists($search, $oldSrc, $newSrc): bool
+    {
+        // Mengambil data yang di-unchecklist
+        $oldData = array_diff(explode(',', $oldSrc), $newSrc);
+
+        return in_array($search, $oldData);
     }
 
     public function resetForm()

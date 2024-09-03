@@ -28,7 +28,7 @@ class FamilyBuildingObserver implements ShouldHandleEventsAfterCommit
      */
     public function updated(FamilyBuilding $familyBuilding): void
     {
-        $this->clearRedis();
+        // $this->clearRedis();
     }
 
     /**

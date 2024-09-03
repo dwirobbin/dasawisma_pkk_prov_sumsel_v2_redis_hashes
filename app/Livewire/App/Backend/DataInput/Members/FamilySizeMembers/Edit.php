@@ -5,6 +5,7 @@ namespace App\Livewire\App\Backend\DataInput\Members\FamilySizeMembers;
 use Livewire\Component;
 use App\Models\Dasawisma;
 use App\Models\FamilySizeMember;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Database\Eloquent\Collection;
 
 class Edit extends Component
@@ -72,6 +73,103 @@ class Edit extends Component
         );
 
         try {
+            $user = auth()->user();
+
+            $prefix = 'data-recap';
+            $areaName = 'sumatera-selatan';
+
+            if ($user->role_id === 2) { // Admin
+                if ($user->admin->province_id != null && $user->admin->regency_id == null) {
+                    // Provinsi
+                    $areaName = $user->admin->province->slug;
+                } else if ($user->admin->regency_id != null && $user->admin->district_id == null) {
+                    // Kabupaten Kota
+                    $areaName = $user->admin->regency->slug;
+                } else if ($user->admin->district_id != null && $user->admin->village_id == null) {
+                    // Kecamatan
+                    $areaName = $user->admin->district->slug;
+                } else if ($user->admin->village_id != null) {
+                    // Kelurahan
+                    $areaName = $user->admin->village->slug;
+                }
+            }
+
+            $dasawisma = Dasawisma::query()
+                ->with(['province', 'regency', 'district', 'village'])
+                ->where('id', '=', $this->dasawisma_id)
+                ->first();
+
+            $hashKeys = [
+                $prefix . ':' . $areaName . ":fn:regencies:page-*:" . $dasawisma->regency_id,
+                $prefix . ':' . $areaName . ":fn:districts:by-regency:" . $dasawisma->regency->slug . ":page-*:" . $dasawisma->district_id,
+                $prefix . ':' . $areaName . ":fn:villages:by-district:" . $dasawisma->district->slug . ":page-*:" . $dasawisma->village_id,
+                $prefix . ':' . $areaName . ":fn:dasawismas:by-village:" . $dasawisma->village->slug . ":page-*:" . $dasawisma->id,
+                $prefix . ':' . $areaName . ":fn:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:" . $this->familySizeMember->family_head_id,
+            ];
+
+            $keys = [];
+            foreach ($hashKeys as $hashKey) {
+                foreach (Redis::keys($hashKey) as $key) {
+                    $keys[] = $key;
+                }
+            }
+
+            Redis::transaction(function ($tx) use ($keys) {
+                foreach ($keys as $key) {
+                    if ($tx->exists($key)) {
+
+                        // Balita
+                        if ($this->toddlers_number > $this->familySizeMember->toddlers_number) {
+                            $tx->hIncrBy($key, 'toddlers_sum', $this->toddlers_number - $this->familySizeMember->toddlers_number); // incr
+                        } else if ($this->toddlers_number < $this->familySizeMember->toddlers_number) {
+                            $tx->hIncrBy($key, 'toddlers_sum', - ($this->familySizeMember->toddlers_number - $this->toddlers_number)); // decr
+                        }
+
+                        // Pasangan Usia Subur
+                        if ($this->pus_number > $this->familySizeMember->pus_number) {
+                            $tx->hIncrBy($key, 'pus_sum', $this->pus_number - $this->familySizeMember->pus_number); // incr
+                        } else if ($this->pus_number < $this->familySizeMember->pus_number) {
+                            $tx->hIncrBy($key, 'pus_sum', - ($this->familySizeMember->pus_number - $this->pus_number)); // decr
+                        }
+
+                        // Wanita Usia Subur
+                        if ($this->wus_number > $this->familySizeMember->wus_number) {
+                            $tx->hIncrBy($key, 'wus_sum', $this->wus_number - $this->familySizeMember->wus_number); // incr
+                        } else if ($this->wus_number < $this->familySizeMember->wus_number) {
+                            $tx->hIncrBy($key, 'wus_sum', - ($this->familySizeMember->wus_number - $this->wus_number)); // decr
+                        }
+
+                        // Orang Buta
+                        if ($this->blind_people_number > $this->familySizeMember->blind_people_number) {
+                            $tx->hIncrBy($key, 'blind_peoples_sum', $this->blind_people_number - $this->familySizeMember->blind_people_number); // incr
+                        } else if ($this->blind_people_number < $this->familySizeMember->blind_people_number) {
+                            $tx->hIncrBy($key, 'blind_peoples_sum', - ($this->familySizeMember->blind_people_number - $this->blind_people_number)); // decr
+                        }
+
+                        // Wanita Hamil
+                        if ($this->pregnant_women_number > $this->familySizeMember->pregnant_women_number) {
+                            $tx->hIncrBy($key, 'pregnant_womens_sum', $this->pregnant_women_number - $this->familySizeMember->pregnant_women_number); // incr
+                        } else if ($this->pregnant_women_number < $this->familySizeMember->pregnant_women_number) {
+                            $tx->hIncrBy($key, 'pregnant_womens_sum', - ($this->familySizeMember->pregnant_women_number - $this->pregnant_women_number)); // decr
+                        }
+
+                        // Ibu Menyusui
+                        if ($this->breastfeeding_mother_number > $this->familySizeMember->breastfeeding_mother_number) {
+                            $tx->hIncrBy($key, 'breastfeeding_mothers_sum', $this->breastfeeding_mother_number - $this->familySizeMember->breastfeeding_mother_number); // incr
+                        } else if ($this->breastfeeding_mother_number < $this->familySizeMember->breastfeeding_mother_number) {
+                            $tx->hIncrBy($key, 'breastfeeding_mothers_sum', - ($this->familySizeMember->breastfeeding_mother_number - $this->breastfeeding_mother_number)); // incr
+                        }
+
+                        // Lansia
+                        if ($this->elderly_number > $this->familySizeMember->elderly_number) {
+                            $tx->hIncrBy($key, 'elderlies_sum', $this->elderly_number - $this->familySizeMember->elderly_number); // incr
+                        } else if ($this->elderly_number < $this->familySizeMember->elderly_number) {
+                            $tx->hIncrBy($key, 'elderlies_sum', - ($this->elderly_number - $this->familySizeMember->elderly_number)); // decr
+                        }
+                    }
+                }
+            });
+
             $this->familySizeMember->update($validatedData);
 
             toastr_success('Data berhasil diperbaharui.');

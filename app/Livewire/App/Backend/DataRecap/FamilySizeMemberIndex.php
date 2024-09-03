@@ -250,10 +250,10 @@ class FamilySizeMemberIndex extends Component
                         if ($familySizeMembers->isNotEmpty()) {
                             $pageData = $familySizeMembers->toArray();
 
-                            Redis::transaction(function ($redis) use ($pageData, $familySizeMembers) {
+                            Redis::transaction(function ($redis) use ($pageData, $keyCacheFNDistricts) {
                                 foreach ($pageData['data'] as $value) {
-                                    $redis->hMSet("$familySizeMembers:{$value['id']}", [...$value, ...['next_page_url' => $pageData['next_page_url']]]);
-                                    $redis->expire("$familySizeMembers:{$value['id']}", config('database.redis.options.ttl'));
+                                    $redis->hMSet("$keyCacheFNDistricts:{$value['id']}", [...$value, ...['next_page_url' => $pageData['next_page_url']]]);
+                                    $redis->expire("$keyCacheFNDistricts:{$value['id']}", config('database.redis.options.ttl'));
                                 }
                             });
                         }

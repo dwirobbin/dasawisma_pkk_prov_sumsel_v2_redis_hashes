@@ -26,7 +26,7 @@ class FamilyHeadObserver implements ShouldHandleEventsAfterCommit
      */
     public function updated(FamilyHead $familyHead): void
     {
-        $this->clearRedis();
+        // $this->clearRedis();
     }
 
     /**

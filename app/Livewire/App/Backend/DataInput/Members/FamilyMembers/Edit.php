@@ -7,6 +7,7 @@ use App\Models\Dasawisma;
 use App\Models\FamilyHead;
 use App\Models\FamilyMember;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\Rule as ValidationRule;
 
@@ -126,6 +127,162 @@ class Edit extends Component
         );
 
         try {
+            $user = auth()->user();
+
+            $prefix = 'data-recap';
+            $areaName = 'sumatera-selatan';
+
+            if ($user->role_id === 2) { // Admin
+                if ($user->admin->province_id != null && $user->admin->regency_id == null) {
+                    // Provinsi
+                    $areaName = $user->admin->province->slug;
+                } else if ($user->admin->regency_id != null && $user->admin->district_id == null) {
+                    // Kabupaten Kota
+                    $areaName = $user->admin->regency->slug;
+                } else if ($user->admin->district_id != null && $user->admin->village_id == null) {
+                    // Kecamatan
+                    $areaName = $user->admin->district->slug;
+                } else if ($user->admin->village_id != null) {
+                    // Kelurahan
+                    $areaName = $user->admin->village->slug;
+                }
+            }
+
+            $dasawisma = Dasawisma::query()
+                ->with(['province', 'regency', 'district', 'village'])
+                ->where('id', '=', $this->dasawisma_id)
+                ->first();
+
+            $hashKeys = [
+                $prefix . ':' . $areaName . ":fm:regencies:page-*:" . $dasawisma->regency_id,
+                $prefix . ':' . $areaName . ":fm:districts:by-regency:" . $dasawisma->regency->slug . ":page-*:" . $dasawisma->district_id,
+                $prefix . ':' . $areaName . ":fm:villages:by-district:" . $dasawisma->district->slug . ":page-*:" . $dasawisma->village_id,
+                $prefix . ':' . $areaName . ":fm:dasawismas:by-village:" . $dasawisma->village->slug . ":page-*:" . $dasawisma->id,
+                $prefix . ':' . $areaName . ":fm:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:" . $this->family_head_id,
+            ];
+
+            $keys = [];
+            foreach ($hashKeys as $hashKey) {
+                foreach (Redis::keys($hashKey) as $key) {
+                    $keys[] = $key;
+                }
+            }
+
+            Redis::transaction(function ($tx) use ($keys) {
+                foreach ($keys as $key) {
+                    if ($tx->exists($key)) {
+
+                        if (count($this->family_members) !== count($this->current_family_members)) {
+
+                            // Get All New Data
+                            $newFamilyMembers = array_slice($this->family_members, count($this->current_family_members));
+
+                            // Jumlah Anggota Keluarga
+                            $tx->hIncrBy($key, 'family_members_count', count($newFamilyMembers));
+
+                            // Jenis Kelamin
+                            $tx->hIncrBy($key, 'gender_males_count', $this->arrayCountVals($newFamilyMembers, 'gender', 'Laki-laki'));
+                            $tx->hIncrBy($key, 'gender_females_count', $this->arrayCountVals($newFamilyMembers, 'gender', 'Perempuan'));
+
+                            // Status Perkawinan
+                            $tx->hIncrBy($key, 'marries_count', $this->arrayCountVals($newFamilyMembers, 'marital_status', 'Kawin'));
+                            $tx->hIncrBy($key, 'singles_count', $this->arrayCountVals($newFamilyMembers, 'marital_status', 'Belum Kawin'));
+                            $tx->hIncrBy($key, 'widows_count', $this->arrayCountVals($newFamilyMembers, 'marital_status', 'Janda'));
+                            $tx->hIncrBy($key, 'widowers_count', $this->arrayCountVals($newFamilyMembers, 'marital_status', 'Duda'));
+
+                            // Pendidikan Terakhir
+                            $tx->hIncrBy($key, 'kindergartens_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'TK/PAUD'));
+                            $tx->hIncrBy($key, 'elementary_schools_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'SD/MI'));
+                            $tx->hIncrBy($key, 'middle_schools_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'SLTP/SMP/MTS'));
+                            $tx->hIncrBy($key, 'high_schools_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'SLTA/SMA/MA/SMK'));
+                            $tx->hIncrBy($key, 'associate_degrees_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'Diploma'));
+                            $tx->hIncrBy($key, 'bachelor_degrees_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'S1'));
+                            $tx->hIncrBy($key, 'master_degrees_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'S2'));
+                            $tx->hIncrBy($key, 'post_degrees_count', $this->arrayCountVals($newFamilyMembers, 'last_education', 'S3'));
+
+                            // Pekerjaan
+                            $tx->hIncrBy($key, 'workings_count', count(array_filter(array_column($newFamilyMembers, 'profession'))));
+                            $tx->hIncrBy($key, 'not_workings_count', array_count_values(array_column($newFamilyMembers, 'profession'))[''] ?? 0);
+                        }
+
+                        if (count($this->family_members) === count($this->current_family_members)) {
+
+                            // Jenis Kelamin
+                            $newGenders = array_diff_assoc(array_column($this->family_members, 'gender'), array_column($this->current_family_members, 'gender'));
+                            if (!empty($newGenders)) {
+                                $tx->hIncrBy($key, 'gender_males_count', array_count_values($newGenders)['Laki-laki'] ?? 0);
+                                $tx->hIncrBy($key, 'gender_females_count', array_count_values($newGenders)['Perempuan'] ?? 0);
+                            }
+                            $removedGenders = array_diff_assoc(array_column($this->current_family_members, 'gender'), array_column($this->family_members, 'gender'));
+                            if (!empty($removedGenders)) {
+                                $tx->hIncrBy($key, 'gender_males_count', - (array_count_values($removedGenders)['Laki-laki'] ?? 0));
+                                $tx->hIncrBy($key, 'gender_females_count', - (array_count_values($removedGenders)['Perempuan'] ?? 0));
+                            }
+
+                            // Status Perkawinan
+                            $newMaritalStatuses = array_diff_assoc(array_column($this->family_members, 'marital_status'), array_column($this->current_family_members, 'marital_status'));
+                            if (!empty($newMaritalStatuses)) {
+                                $tx->hIncrBy($key, 'marries_count', array_count_values($newMaritalStatuses)['Kawin'] ?? 0);
+                                $tx->hIncrBy($key, 'singles_count', array_count_values($newMaritalStatuses)['Belum Kawin'] ?? 0);
+                                $tx->hIncrBy($key, 'widows_count', array_count_values($newMaritalStatuses)['Janda'] ?? 0);
+                                $tx->hIncrBy($key, 'widowers_count', array_count_values($newMaritalStatuses)['Duda'] ?? 0);
+                            }
+                            $removedMaritalStatuses = array_diff_assoc(array_column($this->current_family_members, 'marital_status'), array_column($this->family_members, 'marital_status'));
+                            if (!empty($removedMaritalStatuses)) {
+                                $tx->hIncrBy($key, 'marries_count', - (array_count_values($removedMaritalStatuses)['Kawin'] ?? 0));
+                                $tx->hIncrBy($key, 'singles_count', - (array_count_values($removedMaritalStatuses)['Belum Kawin'] ?? 0));
+                                $tx->hIncrBy($key, 'widows_count', - (array_count_values($removedMaritalStatuses)['Janda'] ?? 0));
+                                $tx->hIncrBy($key, 'widowers_count', - (array_count_values($removedMaritalStatuses)['Duda'] ?? 0));
+                            }
+
+                            // Pendidikan Terakhir
+                            $newLastEducations = array_diff_assoc(array_column($this->family_members, 'last_education'), array_column($this->current_family_members, 'last_education'));
+                            if (!empty($newLastEducations)) {
+                                $tx->hIncrBy($key, 'kindergartens_count', array_count_values($newLastEducations)['TK/PAUD'] ?? 0);
+                                $tx->hIncrBy($key, 'elementary_schools_count', array_count_values($newLastEducations)['SD/MI'] ?? 0);
+                                $tx->hIncrBy($key, 'middle_schools_count', array_count_values($newLastEducations)['SLTP/SMP/MTS'] ?? 0);
+                                $tx->hIncrBy($key, 'high_schools_count', array_count_values($newLastEducations)['SLTA/SMA/MA/SMK'] ?? 0);
+                                $tx->hIncrBy($key, 'associate_degrees_count', array_count_values($newLastEducations)['Diploma'] ?? 0);
+                                $tx->hIncrBy($key, 'bachelor_degrees_count', array_count_values($newLastEducations)['S1'] ?? 0);
+                                $tx->hIncrBy($key, 'master_degrees_count', array_count_values($newLastEducations)['S2'] ?? 0);
+                                $tx->hIncrBy($key, 'post_degrees_count', array_count_values($newLastEducations)['S3'] ?? 0);
+                            }
+                            $removedLastEducations = array_diff_assoc(array_column($this->current_family_members, 'last_education'), array_column($this->family_members, 'last_education'));
+                            if (!empty($removedLastEducations)) {
+                                $tx->hIncrBy($key, 'kindergartens_count', - (array_count_values($removedLastEducations)['TK/PAUD'] ?? 0));
+                                $tx->hIncrBy($key, 'elementary_schools_count', - (array_count_values($removedLastEducations)['SD/MI'] ?? 0));
+                                $tx->hIncrBy($key, 'middle_schools_count', - (array_count_values($removedLastEducations)['SLTP/SMP/MTS'] ?? 0));
+                                $tx->hIncrBy($key, 'high_schools_count', - (array_count_values($removedLastEducations)['SLTA/SMA/MA/SMK'] ?? 0));
+                                $tx->hIncrBy($key, 'associate_degrees_count', - (array_count_values($removedLastEducations)['Diploma'] ?? 0));
+                                $tx->hIncrBy($key, 'bachelor_degrees_count', - (array_count_values($removedLastEducations)['S1'] ?? 0));
+                                $tx->hIncrBy($key, 'master_degrees_count', - (array_count_values($removedLastEducations)['S2'] ?? 0));
+                                $tx->hIncrBy($key, 'post_degrees_count', - (array_count_values($removedLastEducations)['S3'] ?? 0));
+                            }
+
+                            // Pekerjaan
+                            $professions = array_diff_assoc(array_column($this->family_members, 'profession'), array_column($this->current_family_members, 'profession'));
+                            if (!empty($professions)) {
+
+                                $workingsCount = count(array_filter($professions, 'strlen'));
+
+                                $notWorkingsCount = array_count_values($professions)[''] ?? 0;
+                                $notWorkingsCount += array_count_values($professions)['Belum/Tidak Bekerja'] ?? 0;
+
+                                if (!in_array('', $professions) && !in_array('Belum/Tidak Bekerja', $professions)) {
+                                    $tx->hIncrBy($key, 'workings_count', $workingsCount ?? 0);
+                                    $tx->hIncrBy($key, 'not_workings_count', - ($workingsCount ?? 0));
+                                }
+
+                                if (in_array('', $professions) || in_array('Belum/Tidak Bekerja', $professions)) {
+                                    $tx->hIncrBy($key, 'not_workings_count', $notWorkingsCount ?? 0);
+                                    $tx->hIncrBy($key, 'workings_count', - ($notWorkingsCount ?? 0));
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
             DB::transaction(function () {
                 foreach ($this->family_members as $familyMember) {
                     if (isset($familyMember['id'])) {

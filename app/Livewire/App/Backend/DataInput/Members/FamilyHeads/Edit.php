@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Dasawisma;
 use App\Models\FamilyHead;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\Rule as ValidationRule;
 use App\Livewire\App\Backend\DataInput\Members\FamilyHeads\Table;
@@ -63,6 +64,58 @@ class Edit extends Component
         );
 
         try {
+            $user = auth()->user();
+
+            $prefix = 'data-recap';
+            $areaName = 'sumatera-selatan';
+
+            if ($user->role_id === 2) { // Admin
+                if ($user->admin->province_id != null && $user->admin->regency_id == null) {
+                    // Provinsi
+                    $areaName = $user->admin->province->slug;
+                } else if ($user->admin->regency_id != null && $user->admin->district_id == null) {
+                    // Kabupaten Kota
+                    $areaName = $user->admin->regency->slug;
+                } else if ($user->admin->district_id != null && $user->admin->village_id == null) {
+                    // Kecamatan
+                    $areaName = $user->admin->district->slug;
+                } else if ($user->admin->village_id != null) {
+                    // Kelurahan
+                    $areaName = $user->admin->village->slug;
+                }
+            }
+
+            $dasawisma = Dasawisma::query()
+                ->with(['province', 'regency', 'district', 'village'])
+                ->where('id', '=', $this->dasawisma_id)
+                ->first();
+
+            $hashKeys = [
+                $prefix . ':' . $areaName . ":fb:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:*",
+                $prefix . ':' . $areaName . ":fn:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:*",
+                $prefix . ':' . $areaName . ":fm:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:*",
+                $prefix . ':' . $areaName . ":fa:family-heads:by-dasawisma:" . $dasawisma->slug . ":page-*:*",
+            ];
+
+            $keys = [];
+            foreach ($hashKeys as $hashKey) {
+                foreach (Redis::keys($hashKey) as $key) {
+                    $keys[] = $key;
+                }
+            }
+
+            Redis::transaction(function ($tx) use ($keys) {
+                if ($this->dasawisma_id == $this->familyHead->dasawisma_id) {
+                    foreach ($keys as $key) {
+                        if ($tx->exists($key)) {
+                            $tx->hSet($key, 'name', ucfirst($this->family_head));
+                        }
+                    }
+                } else {
+                    Redis::flushDB();
+                }
+            });
+
             $this->familyHead->update([
                 'dasawisma_id'  => $this->dasawisma_id ?: null,
                 'kk_number'     => $this->kk_number,

@@ -28,7 +28,7 @@ class FamilyActivityObserver implements ShouldHandleEventsAfterCommit
      */
     public function updated(FamilyActivity $familyActivity): void
     {
-        $this->clearRedis();
+        // $this->clearRedis();
     }
 
     /**
